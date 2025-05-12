@@ -6,11 +6,14 @@ import java.util.List;
 public class Federacao {
     private String nome;
     private final List<Produto> lstProdutos;
-    // Completar
+    private final List<Instituição> instituições;
+    private EscalaDiaria escalaAtual;
+    private final List <Barraca> todasBarracas = new ArrayList<>();
 
     public Federacao(String nome) {
         this.nome = nome;
         this.lstProdutos = new ArrayList<>();
+        this.instituições = new ArrayList<>();
     }
 
     public boolean adicionarProduto(Produto produto) {
@@ -31,7 +34,69 @@ public class Federacao {
         return false;
     }
 
-    // Completar com outras funcionalidades
+    public List<Produto> getLstProdutos(){
+        return new ArrayList<>(lstProdutos);
+    }
+
+    public boolean adicionarInstituição(Instituição instituição){
+        if (!instituiçãoExiste(instituição.getNome())){
+            instituições.add(instituição);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Instituição> getInstituições(){
+        return instituições;
+    }
+
+    public boolean listaContemInstituiçao (String nomeInstituiçao){
+        for (Instituição inst : instituições){
+            if (inst.getNome().equalsIgnoreCase(nomeInstituiçao)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean instituiçãoExiste (String nome){
+        for (Instituição inst : instituições){
+            if (inst.getNome().equalsIgnoreCase(nome)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public VoluntarioVendas buscarVoluntarioVendasPorNumeroAluno(int numeroAluno){
+        for (Instituição instituiçao : instituições){
+            VoluntarioVendas voluntario = instituiçao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
+            if (voluntario != null){
+                return voluntario;
+            }
+
+        }
+        return null;
+    }
+
+    public List<Barraca> getTodasBarracas(){
+        return todasBarracas;
+    }
+
+    public EscalaDiaria getEscalaAtual() {
+        return escalaAtual;
+    }
+
+    public void setEscalaAtual(EscalaDiaria escalaAtual) {
+        this.escalaAtual = escalaAtual;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
 
 
     @Override

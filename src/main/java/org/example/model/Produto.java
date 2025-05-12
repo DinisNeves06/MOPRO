@@ -25,6 +25,7 @@ public class Produto {
     }
 
     public String getNome() {
+
         return nome;
     }
 
@@ -40,6 +41,9 @@ public class Produto {
         this.preco = preco;
     }
 
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,8 +55,10 @@ public class Produto {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
-        sb.append(nome);
-        sb.append(String.format(" (%.2f€)", preco));
+        sb.append("\nNome: ").append(nome);
+        sb.append("\nPreco: ").append(preco).append("€");
+        sb.append("");
         return sb.toString();
     }
+
 }
