@@ -1,119 +1,98 @@
 package org.example.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Federacao {
-    private String nome;
-    private final List<Produto> lstProdutos;
-    private final List<Instituição> instituições;
-    private EscalaDiaria escalaAtual;
-    private final List <Barraca> todasBarracas = new ArrayList<>();
+    private List<Barraca> barracas = new ArrayList<>();
+    private List<Instituicao> instituicoes = new ArrayList<>();
 
-    public Federacao(String nome) {
-        this.nome = nome;
-        this.lstProdutos = new ArrayList<>();
-        this.instituições = new ArrayList<>();
+    public Federacao() {
+        // Criar dados de teste
+        Instituicao isep = new Instituicao("ISEP");
+        instituicoes.add(isep);
+
+        Barraca barraca1 = new Barraca("Engenharia à Rasca", isep);
+
+        Produto cerveja = new Produto("Cerveja", 100);
+        Produto agua = new Produto("Água", 50);
+        barraca1.adicionarProduto(cerveja);
+        barraca1.adicionarProduto(agua);
+
+        VoluntarioVenda joao = new VoluntarioVenda("João Silva", 12345, "Engenharia Informática", isep);
+        VoluntarioVenda ana = new VoluntarioVenda("Ana Costa", 67890, "Engenharia Mecânica", isep);
+        VoluntarioStock pedro = new VoluntarioStock("Pedro Lopes", 54321, "Engenharia Civil", isep);
+
+        barraca1.adicionarVoluntario(joao);
+        barraca1.adicionarVoluntario(ana);
+        barraca1.adicionarVoluntario(pedro);
+
+        barracas.add(barraca1);
     }
 
-    public boolean adicionarProduto(Produto produto) {
-        if (!listaContemProduto(produto.getNome())) {
-            lstProdutos.add(new Produto(produto));
-            return true;
-        } else {
-            return false;
+    public List<Barraca> getBarracas() {
+        return barracas;
+    }
+
+    public List<Produto> getProdutos() {
+        List<Produto> todos = new ArrayList<>();
+        for (Barraca b : barracas) {
+            todos.addAll(b.getProdutos());
         }
+        return todos;
     }
 
-    public boolean listaContemProduto(String nomeProduto) {
-        for(Produto produto : lstProdutos){
-            if(produto.getNome().equals(nomeProduto)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<Produto> getLstProdutos(){
-        return new ArrayList<>(lstProdutos);
-    }
-
-    public boolean adicionarInstituição(Instituição instituição){
-        if (!instituiçãoExiste(instituição.getNome())){
-            instituições.add(instituição);
-            return true;
-        }
-        return false;
-    }
-
-    public List<Instituição> getInstituições(){
-        return instituições;
-    }
-
-    public boolean listaContemInstituiçao (String nomeInstituiçao){
-        for (Instituição inst : instituições){
-            if (inst.getNome().equalsIgnoreCase(nomeInstituiçao)){
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    public boolean instituiçãoExiste (String nome){
-        for (Instituição inst : instituições){
-            if (inst.getNome().equalsIgnoreCase(nome)){
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    public VoluntarioVendas buscarVoluntarioVendasPorNumeroAluno(int numeroAluno){
-        for (Instituição instituiçao : instituições){
-            VoluntarioVendas voluntario = instituiçao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
-            if (voluntario != null){
-                return voluntario;
-            }
-
+    public Barraca getBarracaDoVoluntario(String nomeVoluntario) {
+        for (Barraca b : barracas) {
+            if (b.temVoluntario(nomeVoluntario)) return b;
         }
         return null;
     }
 
-    public List<Barraca> getTodasBarracas(){
-        return todasBarracas;
-    }
-
-    public EscalaDiaria getEscalaAtual() {
-        return escalaAtual;
-    }
-
-    public void setEscalaAtual(EscalaDiaria escalaAtual) {
-        this.escalaAtual = escalaAtual;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Federacao: ");
-        sb.append("nome='").append(nome).append("\n");
-        sb.append("Lista de Produtos:");
-        if (lstProdutos.isEmpty()) {
-            sb.append(" (VAZIA)\n");
-        } else {
-            for (Produto produto : lstProdutos) {
-                sb.append("\n\t- ").append(produto);
+    public void mostrarDetalhesBarracas() {
+        for (Barraca b : barracas) {
+            System.out.println("\n--- Barraca: \"" + b.getNome() + "\" ---");
+            System.out.println("Instituição: " + b.getInstituicao().getNome());
+            System.out.println("Voluntários:");
+            for (Voluntario v : b.getVoluntarios()) {
+                System.out.println("- " + v.getNome() + " (" + v.getNumero() + ") - " + v.getCurso());
+            }
+            System.out.println("Stock:");
+            for (Produto p : b.getProdutos()) {
+                System.out.println("- " + p.getNome() + ": " + p.getQuantidade());
             }
         }
-        // Completar
-        return sb.toString();
+    }
+
+    public void listarBarracasPorVendas() {
+        barracas.sort((a, b) -> b.totalVendas() - a.totalVendas());
+        for (Barraca b : barracas) {
+            System.out.println(b.getNome() + " - Total Vendas: " + b.totalVendas());
+        }
+    }
+
+    public void listarVoluntariosOrdenados() {
+        List<Voluntario> todos = new ArrayList<>();
+        for (Barraca b : barracas) {
+            todos.addAll(b.getVoluntarios());
+        }
+        todos.sort(Comparator.comparingInt(Voluntario::getNumero));
+        for (Voluntario v : todos) {
+            System.out.println(v.getNumero() + " - " + v.getNome() + " (" + v.getCurso() + ")");
+        }
+    }
+
+    public void listarVendasPorCategoria() {
+        for (Barraca b : barracas) {
+            System.out.println("Barraca: " + b.getNome());
+            b.mostrarVendas();
+        }
+    }
+
+    public void gravarDados() {
+        System.out.println("Funcionalidade de gravação ainda não implementada.");
+    }
+
+    public void carregarDados() {
+        System.out.println("Funcionalidade de carregamento ainda não implementada.");
     }
 }
-    
-    
