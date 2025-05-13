@@ -1,32 +1,47 @@
 package org.example.ui;
 
 import org.example.model.Federacao;
-import org.example.utils.Utils;
+import org.example.model.Barraca;
 
-import java.io.IOException;
+import java.util.Scanner;
 
 public class MenuVoluntarioStock {
-    private Federacao federacao;
-    private String opcao;
+    private final Scanner scanner;
+    private final Federacao federacao;
 
-    public MenuVoluntarioStock(Federacao federacao) {
+    public MenuVoluntarioStock(Scanner scanner, Federacao federacao) {
+        this.scanner = scanner;
         this.federacao = federacao;
     }
 
-    public void run() throws IOException {
-        do {
-            System.out.println("###### MENU #####");
-            System.out.println("1. Adicionar Stock");
-            // Completar
-            System.out.println("0. Voltar");
-            opcao = Utils.readLineFromConsole("Escolha uma opção: ");
+    public void mostrar() {
+        System.out.print("Nome do voluntário: ");
+        String nome = scanner.nextLine();
+        Barraca barraca = federacao.getBarracaDoVoluntario(nome);
+        if (barraca == null) {
+            System.out.println("Voluntário não associado a nenhuma barraca.");
+            return;
+        }
 
-            if (opcao.equals("1")) {
-                // Completar
-                System.out.println("Selecionou a opção: Adicionar stock");
+        while (true) {
+            System.out.println("===== Menu Voluntário de Stock =====");
+            System.out.println("1. Repor stock");
+            System.out.println("2. Ver produtos disponíveis");
+            System.out.println("3. Sair");
+            System.out.print("Escolha uma opção: ");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1 -> barraca.reporStock(scanner);
+                case 2 -> barraca.verProdutos();
+                case 3 -> {
+                    return;
+                }
+                default -> System.out.println("Opção inválida.");
             }
         }
-        while (!opcao.equals("0"));
     }
 }
+
 
