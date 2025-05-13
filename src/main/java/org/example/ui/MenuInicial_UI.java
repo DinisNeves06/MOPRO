@@ -1,50 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package org.example.ui;
-
-//import model.ViagensTop;
-//import utils.Utils;
+package org.example;
 
 import org.example.model.Federacao;
-import org.example.utils.Utils;
+import org.example.ui.MenuAdministrador;
+import org.example.ui.MenuVoluntarioStock;
+import org.example.ui.MenuVoluntarioVenda;
 
-import java.io.IOException;
+import java.util.Scanner;
 
 public class MenuInicial_UI {
-    private Federacao federacao;
-    private String opcao;
+    private final Scanner scanner;
+    private final Federacao federacao;
 
-
-    public MenuInicial_UI(Federacao federacao) {
-       this.federacao = federacao;
+    public MenuInicial_UI(Scanner scanner, Federacao federacao) {
+        this.scanner = scanner;
+        this.federacao = federacao;
     }
 
-    public void run() throws IOException {
-        do {
-            System.out.println("###### MENU #####");
+    public void iniciar() {
+        while (true) {
+            System.out.println("===== Sistema FAP =====");
             System.out.println("1. Administrador");
-            System.out.println("2. Voluntário de Stock");
-            System.out.println("3. Voluntário de Vendas");
+            System.out.println("2. Voluntário de Vendas");
+            System.out.println("3. Voluntário de Stock");
+            System.out.println("4. Sair");
+            System.out.print("Opção: ");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
 
-            System.out.println("0. Sair");
-
-            opcao = Utils.readLineFromConsole("Escolha uma opção: ");
-
-            if (opcao.equals("1")) {
-                MenuAdministrador ui = new MenuAdministrador(federacao);
-                ui.run();
-            } else if (opcao.equals("2")) {
-                MenuVoluntarioStock ui = new MenuVoluntarioStock(federacao);
-                ui.run();
-            } else if (opcao.equals("3")) {
-                MenuVoluntarioVendas ui = new MenuVoluntarioVendas(federacao);
-                ui.run();
+            switch (opcao) {
+                case 1 -> new MenuAdministrador(scanner, federacao).mostrar();
+                case 2 -> new MenuVoluntarioVenda(scanner, federacao).mostrar();
+                case 3 -> new MenuVoluntarioStock(scanner, federacao).mostrar();
+                case 4 -> {
+                    System.out.println("Encerrando...");
+                    return;
+                }
+                default -> System.out.println("Opção inválida!");
             }
         }
-        while (!opcao.equals("0"));
     }
 }
