@@ -8,7 +8,7 @@ public class Barraca {
     private String nome;
     private final List<Voluntario> voluntarios;
     private Instituição instituição;
-    private final List<StockProdutos> stock;
+    private List<StockProdutos> stock;
 
     public Barraca (String nome, Instituição instituição){
 

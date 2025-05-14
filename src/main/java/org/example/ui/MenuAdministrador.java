@@ -18,7 +18,7 @@ public class MenuAdministrador {
     {
         do
         {
-            System.out.println("###### MENU #####");
+            System.out.println("###### MENU ADMINISTRADOR #####");
             System.out.println("1. Registar Produto");
             // Completar com mais opções
             System.out.println("0. Voltar");

@@ -114,6 +114,13 @@ public class Federacao {
         // Completar
         return sb.toString();
     }
+
+    public Administrador autenticarAdministrador(String nome, int numero, String curso, String instituicao, String password) {
+        return null;
+    }
+
+    public Voluntario autenticarVoluntario(String nome, int numero, String curso, String instituicao, String password, Class<?> tipo) {
+    }
 }
     
     

@@ -57,7 +57,7 @@ public class Instituição {
     public boolean adicionarBarraca (Barraca barraca){
         if (!getBarracas().contains(barraca)){
             getBarracas().add(barraca);
-            return true
+            return true;
         }
         return false;
     }

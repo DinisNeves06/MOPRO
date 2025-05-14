@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class Voluntario {
+public abstract class Voluntario {
     private String nome;
     private int numeroAluno;
     private Instituição instituicao;
