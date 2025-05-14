@@ -1,47 +1,46 @@
-import java.util.ArrayList;
-import java.util.List;
+package org.example.model;
 
 public class StockProdutos {
-    private List<Produto> produtos;
+    private String nome;
+    private double preco;
+    private int quantidade;
 
-    public StockProdutos() {
-        this.produtos = new ArrayList<>();
+    public StockProdutos(String nome, double preco, int quantidade) {
+        this.nome = nome;
+        this.preco = preco;
+        this.quantidade = quantidade;
     }
 
-    public void adicionarProduto(Produto produto) {
-        produtos.add(produto);
+    public String getNome() {
+        return nome;
     }
 
-    public List<StockProdutos> getProdutos() {
-        return produtos;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public int getStockTotal() {
-        int total = 0;
-        for (StockProdutos p : produtos) {
-            total += p.getStock(); // Assumindo que Produto tem getStock()
-        }
-        return total;
+    public double getPreco() {
+        return preco;
     }
 
-    public void listarProdutos() {
-        for (Produto p : produtos) {
-            System.out.println(p);
-        }
+    public void setPreco(double preco) {
+        this.preco = preco;
     }
 
-    // Opcional: remover produto
-    public boolean removerProduto(Produto produto) {
-        return produtos.remove(produto);
+    public int getQuantidade() {
+        return quantidade;
     }
 
-    // Opcional: encontrar produto por nome
-    public Produto encontrarProduto(String nome) {
-        for (Produto p : produtos) {
-            if (p.getNome().equalsIgnoreCase(nome)) {
-                return p;
-            }
-        }
-        return null;
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    @Override
+    public String toString() {
+        return "StockProdutos{" +
+                "nome='" + nome + '\'' +
+                ", preco=" + preco +
+                ", quantidade=" + quantidade +
+                '}';
     }
 }
