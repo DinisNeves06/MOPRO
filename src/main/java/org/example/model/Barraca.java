@@ -19,6 +19,7 @@ public class Barraca {
 
     }
 
+
     public String getNome() {
         return nome;
     }

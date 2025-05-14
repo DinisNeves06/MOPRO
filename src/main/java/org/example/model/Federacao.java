@@ -8,7 +8,7 @@ public class Federacao {
     private final List<Produto> lstProdutos;
     private final List<Instituição> instituições;
     private EscalaDiaria escalaAtual;
-    private final List <Barraca> todasBarracas = new ArrayList<>();
+    private final List<Barraca> todasBarracas = new ArrayList<>();
 
     public Federacao(String nome) {
         this.nome = nome;
@@ -26,33 +26,33 @@ public class Federacao {
     }
 
     public boolean listaContemProduto(String nomeProduto) {
-        for(Produto produto : lstProdutos){
-            if(produto.getNome().equals(nomeProduto)){
+        for (Produto produto : lstProdutos) {
+            if (produto.getNome().equals(nomeProduto)) {
                 return true;
             }
         }
         return false;
     }
 
-    public List<Produto> getLstProdutos(){
+    public List<Produto> getLstProdutos() {
         return new ArrayList<>(lstProdutos);
     }
 
-    public boolean adicionarInstituição(Instituição instituição){
-        if (!instituiçãoExiste(instituição.getNome())){
+    public boolean adicionarInstituição(Instituição instituição) {
+        if (!instituiçãoExiste(instituição.getNome())) {
             instituições.add(instituição);
             return true;
         }
         return false;
     }
 
-    public List<Instituição> getInstituições(){
+    public List<Instituição> getInstituições() {
         return instituições;
     }
 
-    public boolean listaContemInstituiçao (String nomeInstituiçao){
-        for (Instituição inst : instituições){
-            if (inst.getNome().equalsIgnoreCase(nomeInstituiçao)){
+    public boolean listaContemInstituiçao(String nomeInstituiçao) {
+        for (Instituição inst : instituições) {
+            if (inst.getNome().equalsIgnoreCase(nomeInstituiçao)) {
                 return true;
             }
         }
@@ -60,9 +60,9 @@ public class Federacao {
 
     }
 
-    public boolean instituiçãoExiste (String nome){
-        for (Instituição inst : instituições){
-            if (inst.getNome().equalsIgnoreCase(nome)){
+    public boolean instituiçãoExiste(String nome) {
+        for (Instituição inst : instituições) {
+            if (inst.getNome().equalsIgnoreCase(nome)) {
                 return true;
             }
         }
@@ -70,10 +70,10 @@ public class Federacao {
 
     }
 
-    public VoluntarioVendas buscarVoluntarioVendasPorNumeroAluno(int numeroAluno){
-        for (Instituição instituiçao : instituições){
+    public VoluntarioVendas buscarVoluntarioVendasPorNumeroAluno(int numeroAluno) {
+        for (Instituição instituiçao : instituições) {
             VoluntarioVendas voluntario = instituiçao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
-            if (voluntario != null){
+            if (voluntario != null) {
                 return voluntario;
             }
 
@@ -81,7 +81,7 @@ public class Federacao {
         return null;
     }
 
-    public List<Barraca> getTodasBarracas(){
+    public List<Barraca> getTodasBarracas() {
         return todasBarracas;
     }
 
@@ -98,22 +98,62 @@ public class Federacao {
     }
 
 
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Federacao: ");
-        sb.append("nome='").append(nome).append("\n");
-        sb.append("Lista de Produtos:");
+        final StringBuilder sb = new StringBuilder("==== FEDERAÇÃO ====\n");
+
+        sb.append("Nome: ").append(nome).append("\n");
+
+        // Produtos
+        sb.append("\n--- Lista de Produtos ---\n");
         if (lstProdutos.isEmpty()) {
-            sb.append(" (VAZIA)\n");
+            sb.append("(VAZIA)\n");
         } else {
             for (Produto produto : lstProdutos) {
-                sb.append("\n\t- ").append(produto);
+                sb.append("- ").append(produto).append("\n");
             }
         }
-        // Completar
+
+        // Barracas
+        sb.append("\n--- Lista de Barracas ---\n");
+        if (Barraca.isEmpty()) {
+            sb.append("(VAZIA)\n");
+        } else {
+            for (Barraca barraca : Barraca) {
+                sb.append("- ").append(barraca).append("\n");
+            }
+        }
+
+        // Voluntários
+        sb.append("\n--- Lista de Voluntários ---\n");
+        if (Voluntario.isEmpty()) {
+            sb.append("(VAZIA)\n");
+        } else {
+            for (Voluntario voluntario : Voluntario) {
+                sb.append("- ").append(voluntario).append("\n");
+            }
+        }
+
+        // Instituições
+        sb.append("\n--- Lista de Instituições ---\n");
+        if (Instituição.isEmpty()) {
+            sb.append("(VAZIA)\n");
+        } else {
+            for (Instituição instituicao : Instituição) {
+                sb.append("- ").append(instituicao).append("\n");
+            }
+        }
+
+        // Escalas
+        sb.append("\n--- Escalas ---\n");
+        if (EscalaDiaria.isEmpty()) {
+            sb.append("(VAZIA)\n");
+        } else {
+            for (EscalaDiaria escala : EscalaDiaria) {
+                sb.append("- ").append(escala).append("\n");
+            }
+        }
+
         return sb.toString();
     }
 }
-    
-    
