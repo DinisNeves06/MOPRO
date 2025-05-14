@@ -55,6 +55,7 @@ public class StockProdutos {
     }
 
     public int getQuantidade() {
+        return 0;
     }
 
     public void setQuantidade(int i) {
