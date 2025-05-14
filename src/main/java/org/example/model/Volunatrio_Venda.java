@@ -1,15 +1,21 @@
 package org.example.model;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Volunatrio_Venda extends Utilizador{
-    public Volunatrio_Venda(String nome, int numAluno, String curso, String password) {
-        super(nome, numAluno, curso, password);
+public class VoluntarioVendas extends Voluntario {
+    private List<VendaProdutos> vendas;
+
+    public VoluntarioVendas(String nome, int numeroAluno, Instituição inst) {
+        super(nome, numeroAluno, inst);
+        this.vendas = new ArrayList<>();
     }
 
-    @Override
-    public void mostrarMenu() {
-        System.out.println("Menu do Voluntário de Vendas:");
-        System.out.println("1. Registar venda");
-        System.out.println("2. Ver produtos à venda");
+    public void adicionarVenda(VendaProdutos venda) {
+        vendas.add(venda);
     }
 
+    public List<VendaProdutos> getTodasVendas() {
+        return vendas;
+    }
 }
+
