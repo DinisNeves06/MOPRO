@@ -1,15 +1,14 @@
-package org.example.ui;
+package org.example.model;
 
-import org.example.model.Federacao;
 import org.example.model.Barraca;
 
 import java.util.Scanner;
 
-public class MenuVoluntarioVenda {
+public class MenuVoluntarioVendas {
     private final Scanner scanner;
     private final Federacao federacao;
 
-    public MenuVoluntarioVenda(Scanner scanner, Federacao federacao) {
+    public MenuVoluntarioVendas(Scanner scanner, Federacao federacao) {
         this.scanner = scanner;
         this.federacao = federacao;
     }
