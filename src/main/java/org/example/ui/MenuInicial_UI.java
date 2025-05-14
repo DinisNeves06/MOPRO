@@ -57,7 +57,7 @@ class MenuInicial_UI {
         if (admin.autenticar(nome, password)) {
             new MenuAdministrador().mostrar();
         } else {
-            System.out.println("Autenticação falhou!");
+            System.out.println("Autenticação falhou! Verifique o nome e a password.");
         }
     }
 
