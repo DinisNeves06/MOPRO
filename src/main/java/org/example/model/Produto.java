@@ -1,36 +1,27 @@
 package org.example.model;
 
 public class Produto {
-    private final String nome;
+    private String nome;
+    private double preco;
     private int stock;
 
-    public Produto(String nome, int stock) {
+    public Produto(String nome, double preco, int stock) {
         this.nome = nome;
+        this.preco = preco;
         this.stock = stock;
     }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public double getPreco() { return preco; }
+    public int getStock() { return stock; }
+    public void setStock(int stock) { this.stock = stock; }
 
-    public int getStock() {
-        return stock;
-    }
-
-    public void adicionar(int quantidade) {
+    public void reporStock(int quantidade) {
         this.stock += quantidade;
-    }
-
-    public boolean vender(int quantidade) {
-        if (stock >= quantidade) {
-            stock -= quantidade;
-            return true;
-        }
-        return false;
     }
 
     @Override
     public String toString() {
-        return nome + ": " + stock;
+        return "Produto: " + nome + " (Preço: €" + preco + ", Stock: " + stock+")";
     }
 }

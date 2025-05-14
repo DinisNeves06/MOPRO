@@ -1,39 +1,47 @@
 package org.example.ui;
 
+import org.example.model.Barraca;
 import org.example.model.Federacao;
 import org.example.model.Produto;
 import org.example.utils.Utils;
 
-public class RegistarProduto_UI {
-    private Federacao federacao;
+import java.util.Scanner;
 
-    public RegistarProduto_UI(Federacao federacao) {
-        this.federacao = federacao;
+class RegistarProduto_UI {
+    private Scanner scanner;
+
+    public RegistarProduto_UI() {
+        this.scanner = new Scanner(System.in);
     }
 
-    public void run() {
-        System.out.println("Novo Produto:");
+    public void mostrar() {
+        System.out.print("Nome da barraca: ");
+        String nomeBarraca = scanner.nextLine();
+        Barraca barraca = Federacao.getInstance().getBarracas().stream()
+                .filter(b -> b.getNome().equals(nomeBarraca))
+                .findFirst()
+                .orElse(null);
 
-        Produto novoProduto = introduzDados();
-        apresentaDados(novoProduto);
-
-        if (Utils.confirma("Confirma os dados? (S/N)")) {
-            if (federacao.adicionarProduto(novoProduto)) {
-                System.out.println("Dados do produto guardados com sucesso.");
-            } else {
-                System.out.println("Não foi possível guardar os dados do produto.");
-            }
+        if (barraca == null) {
+            System.out.println("Barraca não encontrada!");
+            return;
         }
-    }
 
-    private static Produto introduzDados() {
-        String nome = Utils.readLineFromConsole("Introduza o nome do produto: ");
-        double preco = Utils.readDoubleFromConsole("Introduza o preço: ");
-        return new Produto(nome, preco);
-    }
+        System.out.print("Nome do produto: ");
+        String nome = scanner.nextLine();
+        System.out.print("Preço: ");
+        double preco = scanner.nextDouble();
+        System.out.print("Stock inicial: ");
+        int stock = scanner.nextInt();
+        scanner.nextLine();
 
-    private void apresentaDados(Produto produto) {
-        System.out.println("Produto: " + produto.toString());
-    }
+        if (preco <= 0 || stock < 0) {
+            System.out.println("Preço ou stock inválido!");
+            return;
+        }
 
+        Produto produto = new Produto(nome, preco, stock);
+        barraca.adicionarProduto(produto);
+        System.out.println("Produto adicionado com sucesso!");
+    }
 }
