@@ -34,5 +34,5 @@ public class Voluntario extends Pessoa implements Classificavel {
     @Override
     public String toString() {
         return "Voluntário: " + nome + " (" + numeroAluno + ", " + curso + ", " + tipo + ", " + instituicao + ", Classificação: " + calcularClassificacao()+")";
-}
+    }
 }

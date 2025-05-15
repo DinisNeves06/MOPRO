@@ -22,12 +22,29 @@ public class Barraca implements Classificavel {
         this.vendasTotais = 0.0;
     }
 
-    public String getNome() { return nome; }
-    public String getInstituicao() { return instituicao; }
-    public List<Produto> getProdutos() { return produtos; }
-    public List<Voluntario> getVoluntarios() { return voluntarios; }
-    public List<Escala> getEscalas() { return escalas; }
-    public double getVendasTotais() { return vendasTotais; }
+    public String getNome() {
+        return nome;
+    }
+
+    public String getInstituicao() {
+        return instituicao;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public List<Voluntario> getVoluntarios() {
+        return voluntarios;
+    }
+
+    public List<Escala> getEscalas() {
+        return escalas;
+    }
+
+    public double getVendasTotais() {
+        return vendasTotais;
+    }
 
     public boolean adicionarProduto(Produto produto) {
         return produtos.add(produto);
@@ -66,7 +83,9 @@ public class Barraca implements Classificavel {
         this.stockFinalDiario = produtos.stream().mapToInt(Produto::getStock).sum();
     }
 
-    public int getStockFinalDiario() { return stockFinalDiario; }
+    public int getStockFinalDiario() {
+        return stockFinalDiario;
+    }
 
     @Override
     public String calcularClassificacao() {
@@ -82,7 +101,6 @@ public class Barraca implements Classificavel {
 
     @Override
     public String toString() {
-        return "Barraca: " + nome + " (" + instituicao + ", Classificação: " + calcularClassificacao()+")";
-
+        return "Barraca: " + nome + " (" + instituicao + ", Classificação: " + calcularClassificacao() + ")";
     }
 }

@@ -86,6 +86,6 @@ class MenuInicial_UI {
         } else {
             System.out.println("Autenticação falhou ou voluntário não é do tipo " + tipo + "!");
 
-        }
+            }
     }
 }

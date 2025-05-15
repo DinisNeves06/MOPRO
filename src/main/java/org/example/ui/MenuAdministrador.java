@@ -48,7 +48,6 @@ class MenuAdministrador {
                 default:
                     System.out.println("Opção inválida!");
             }
-
         }
     }
 }
