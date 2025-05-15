@@ -6,6 +6,8 @@ import org.example.model.Federacao;
 import org.example.model.Voluntario;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class MenuEscalas {
@@ -22,8 +24,15 @@ class MenuEscalas {
             System.out.println("2. Listar Escalas de uma Barraca");
             System.out.println("3. Voltar");
             System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -44,14 +53,14 @@ class MenuEscalas {
                     try {
                         dia = LocalDate.parse(scanner.nextLine());
                     } catch (Exception e) {
-                        System.out.println("Formato de data inválido!");
+                        System.out.println("Formato de data inválido! Use YYYY-MM-DD.");
                         break;
                     }
                     Escala escala = new Escala(dia);
 
                     System.out.println("Adicionar voluntários (mínimo 2):");
                     for (int i = 0; i < 2; i++) {
-                        System.out.print("Nome do voluntário: ");
+                        System.out.print("Nome do voluntário " + (i + 1) + ": ");
                         String nomeVoluntario = scanner.nextLine();
                         Voluntario voluntario = barraca.getVoluntarios().stream()
                                 .filter(v -> v.getNome().equals(nomeVoluntario))
@@ -59,9 +68,14 @@ class MenuEscalas {
                                 .orElse(null);
 
                         if (voluntario != null) {
-                            escala.adicionarVoluntario(voluntario);
+                            if (escala.adicionarVoluntario(voluntario)) {
+                                System.out.println("Voluntário '" + nomeVoluntario + "' adicionado à escala.");
+                            } else {
+                                System.out.println("Erro: Não foi possível adicionar o voluntário à escala (limite atingido).");
+                                i--;
+                            }
                         } else {
-                            System.out.println("Voluntário não encontrado!");
+                            System.out.println("Voluntário '" + nomeVoluntario + "' não encontrado na barraca!");
                             i--;
                         }
                     }
@@ -86,7 +100,12 @@ class MenuEscalas {
                     }
 
                     System.out.println("\n=== Escalas da Barraca " + nomeBarraca + " ===");
-                    barraca.getEscalas().forEach(e -> System.out.println(e.toString()));
+                    List<Escala> escalas = barraca.getEscalas();
+                    if (escalas.isEmpty()) {
+                        System.out.println("Nenhuma escala registrada para esta barraca.");
+                    } else {
+                        escalas.forEach(e -> System.out.println(e.toString()));
+                    }
                     break;
                 case 3:
                     return;

@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.example.ui;
 
 import org.example.model.Barraca;
 import org.example.model.Produto;
 import org.example.model.Voluntario;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class MenuVoluntarioVendas {
@@ -30,8 +28,15 @@ class MenuVoluntarioVendas {
             System.out.println("3. Voltar");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -43,11 +48,16 @@ class MenuVoluntarioVendas {
                     System.out.println("Sua Classificação: " + voluntario.calcularClassificacao());
                     break;
                 case 2:
+                    List<Produto> produtos = barraca.getProdutos();
+                    if (produtos.isEmpty()) {
+                        System.out.println("Nenhum produto registrado na barraca!");
+                        break;
+                    }
                     System.out.println("Produtos disponíveis:");
-                    barraca.getProdutos().forEach(p -> System.out.println("- " + p.getNome() + " (€" + p.getPreco() + ")"));
+                    produtos.forEach(p -> System.out.println("- " + p.getNome() + " (€" + p.getPreco() + ")"));
                     System.out.print("Nome do produto: ");
                     String nomeProduto = scanner.nextLine();
-                    Produto produto = barraca.getProdutos().stream()
+                    Produto produto = produtos.stream()
                             .filter(p -> p.getNome().equals(nomeProduto))
                             .findFirst()
                             .orElse(null);
@@ -58,16 +68,23 @@ class MenuVoluntarioVendas {
                     }
 
                     System.out.print("Quantidade vendida: ");
-                    int quantidade = scanner.nextInt();
-                    scanner.nextLine();
+                    int quantidade;
+                    try {
+                        quantidade = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Quantidade inválida! Insira um número.");
+                        scanner.nextLine();
+                        break;
+                    }
 
                     if (quantidade <= 0) {
-                        System.out.println("Quantidade inválida!");
+                        System.out.println("Quantidade inválida! Deve ser maior que zero.");
                         break;
                     }
 
                     if (produto.getStock() < quantidade) {
-                        System.out.println("Stock insuficiente!");
+                        System.out.println("Stock insuficiente! Disponível: " + produto.getStock());
                         break;
                     }
 

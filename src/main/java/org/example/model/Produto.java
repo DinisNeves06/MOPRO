@@ -22,6 +22,6 @@ public class Produto {
 
     @Override
     public String toString() {
-        return "Produto: " + nome + " (Preço: €" + preco + ", Stock: " + stock+")";
+        return "Produto: " + nome + " (Preço: €" + preco + ", Stock: " + stock + ")";
     }
 }

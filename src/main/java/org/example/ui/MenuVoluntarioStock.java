@@ -4,6 +4,8 @@ import org.example.model.Barraca;
 import org.example.model.Produto;
 import org.example.model.Voluntario;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class MenuVoluntarioStock {
@@ -25,23 +27,40 @@ class MenuVoluntarioStock {
             System.out.println("3. Voltar");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
                     System.out.println("\n=== Stock da Barraca " + barraca.getNome() + " ===");
-                    barraca.getProdutos().forEach(p -> System.out.println(p.toString()));
+                    List<Produto> produtos = barraca.getProdutos();
+                    if (produtos.isEmpty()) {
+                        System.out.println("Nenhum produto registrado.");
+                    } else {
+                        produtos.forEach(p -> System.out.println(p.toString()));
+                    }
                     barraca.atualizarStockFinalDiario();
                     System.out.println("Stock Total: " + barraca.getStockFinalDiario());
                     System.out.println("Classificação da Barraca: " + barraca.calcularClassificacao());
                     break;
                 case 2:
+                    produtos = barraca.getProdutos();
+                    if (produtos.isEmpty()) {
+                        System.out.println("Nenhum produto registrado na barraca!");
+                        break;
+                    }
                     System.out.println("Produtos disponíveis:");
-                    barraca.getProdutos().forEach(p -> System.out.println("- " + p.getNome()));
+                    produtos.forEach(p -> System.out.println("- " + p.getNome()));
                     System.out.print("Nome do produto: ");
                     String nomeProduto = scanner.nextLine();
-                    Produto produto = barraca.getProdutos().stream()
+                    Produto produto = produtos.stream()
                             .filter(p -> p.getNome().equals(nomeProduto))
                             .findFirst()
                             .orElse(null);
@@ -52,14 +71,21 @@ class MenuVoluntarioStock {
                     }
 
                     System.out.print("Quantidade a repor: ");
-                    int quantidade = scanner.nextInt();
-                    scanner.nextLine();
+                    int quantidade;
+                    try {
+                        quantidade = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Quantidade inválida! Insira um número.");
+                        scanner.nextLine();
+                        break;
+                    }
                     if (quantidade <= 0) {
-                        System.out.println("Quantidade inválida!");
+                        System.out.println("Quantidade inválida! Deve ser maior que zero.");
                         break;
                     }
                     produto.reporStock(quantidade);
-                    System.out.println("Stock reposto com sucesso!");
+                    System.out.println("Stock reposto com sucesso! Novo stock: " + produto.getStock());
                     break;
                 case 3:
                     return;

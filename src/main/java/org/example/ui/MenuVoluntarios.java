@@ -4,6 +4,8 @@ import org.example.model.Barraca;
 import org.example.model.Federacao;
 import org.example.model.Voluntario;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class MenuVoluntarios {
@@ -20,8 +22,15 @@ class MenuVoluntarios {
             System.out.println("2. Listar Voluntários de uma Barraca");
             System.out.println("3. Voltar");
             System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -51,9 +60,9 @@ class MenuVoluntarios {
                     try {
                         Voluntario voluntario = new Voluntario(nome, numeroAluno, curso, barraca.getInstituicao(), password, tipo);
                         if (barraca.adicionarVoluntario(voluntario)) {
-                            System.out.println("Voluntário adicionado com sucesso!");
+                            System.out.println("Voluntário '" + nome + "' (" + tipo + ") adicionado com sucesso à barraca '" + nomeBarraca + "'!");
                         } else {
-                            System.out.println("Erro: Instituição do voluntário não corresponde à barraca!");
+                            System.out.println("Erro ao adicionar voluntário!");
                         }
                     } catch (IllegalArgumentException e) {
                         System.out.println("Erro: " + e.getMessage());
@@ -73,7 +82,12 @@ class MenuVoluntarios {
                     }
 
                     System.out.println("\n=== Voluntários da Barraca " + nomeBarraca + " ===");
-                    barraca.getVoluntarios().forEach(v -> System.out.println(v.toString()));
+                    List<Voluntario> voluntarios = barraca.getVoluntarios();
+                    if (voluntarios.isEmpty()) {
+                        System.out.println("Nenhum voluntário registrado nesta barraca.");
+                    } else {
+                        voluntarios.forEach(v -> System.out.println("Voluntário: " + v.getNome() + " (" + v.getNumeroAluno() + ", " + v.getCurso() + ", " + v.getTipo() + ", " + v.getInstituicao() + ")"));
+                    }
                     break;
                 case 3:
                     return;

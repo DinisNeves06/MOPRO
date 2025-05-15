@@ -21,7 +21,7 @@ public abstract class Pessoa {
     public String getInstituicao() { return instituicao; }
     public String getPassword() { return password; }
 
-    public boolean autenticar(String nome, String password) {
+    public boolean autenticar(String nome, String numeroAluno, String curso, String instituicao, String password) {
         return this.nome.equals(nome) && this.password.equals(password);
 
     }

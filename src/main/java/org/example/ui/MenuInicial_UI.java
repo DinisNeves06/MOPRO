@@ -5,10 +5,11 @@ import org.example.model.Barraca;
 import org.example.model.Federacao;
 import org.example.model.Voluntario;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 // Classe para Menu Inicial
+
 class MenuInicial_UI {
     private Scanner scanner;
 
@@ -25,8 +26,15 @@ class MenuInicial_UI {
             System.out.println("4. Sair");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -50,42 +58,71 @@ class MenuInicial_UI {
     private void autenticarAdministrador() {
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
+        System.out.print("Número do aluno: ");
+        String numeroAluno = scanner.nextLine();
+        System.out.print("Curso: ");
+        String curso = scanner.nextLine();
+        System.out.print("Instituição: ");
+        String instituicao = scanner.nextLine();
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
         Administrador admin = Federacao.getInstance().getAdministrador();
-        if (admin.autenticar(nome, password)) {
+        if (admin == null) {
+            System.out.println("Erro: Nenhum administrador configurado!");
+            return;
+        }
+        if (admin.autenticar(nome, numeroAluno, curso, instituicao, password)) {
+            System.out.println("Autenticação bem-sucedida! Bem-vindo, " + admin.getNome());
             new MenuAdministrador().mostrar();
         } else {
-            System.out.println("Autenticação falhou! Verifique o nome e a password.");
+            System.out.println("Autenticação falhou! Verifique os dados inseridos.");
         }
     }
 
     private void autenticarVoluntario(String tipo) {
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
+        System.out.print("Número do aluno: ");
+        String numeroAluno = scanner.nextLine();
+        System.out.print("Curso: ");
+        String curso = scanner.nextLine();
+        System.out.print("Instituição: ");
+        String instituicao = scanner.nextLine();
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
         Barraca barraca = Federacao.getInstance().getBarracas().stream()
                 .filter(b -> b.getVoluntarios().stream()
-                        .anyMatch(v -> v.autenticar(nome, password) && v.getTipo().equals(tipo)))
+                        .anyMatch(v -> v.getNome().equals(nome)))
                 .findFirst()
                 .orElse(null);
 
-        if (barraca != null) {
-            Voluntario voluntario = barraca.getVoluntarios().stream()
-                    .filter(v -> v.autenticar(nome, password))
-                    .findFirst()
-                    .orElse(null);
-            if (tipo.equals("VENDAS")) {
-                new MenuVoluntarioVendas(voluntario, barraca).mostrar();
-            } else {
-                new MenuVoluntarioStock(voluntario, barraca).mostrar();
-            }
-        } else {
-            System.out.println("Autenticação falhou ou voluntário não é do tipo " + tipo + "!");
+        if (barraca == null) {
+            System.out.println("Erro: Voluntário não encontrado em nenhuma barraca!");
+            return;
+        }
 
+        Voluntario voluntario = barraca.getVoluntarios().stream()
+                .filter(v -> v.autenticar(nome, numeroAluno, curso, instituicao, password))
+                .findFirst()
+                .orElse(null);
+
+        if (voluntario == null) {
+            System.out.println("Erro: Credenciais inválidas!");
+            return;
+        }
+
+        if (!voluntario.getTipo().equals(tipo)) {
+            System.out.println("Erro: Voluntário é do tipo " + voluntario.getTipo() + ", não " + tipo + "!");
+            return;
+        }
+
+        System.out.println("Autenticação bem-sucedida! Bem-vindo, " + voluntario.getNome());
+        if (tipo.equals("VENDAS")) {
+            new MenuVoluntarioVendas(voluntario, barraca).mostrar();
+        } else {
+            new MenuVoluntarioStock(voluntario, barraca).mostrar();
         }
     }
 }

@@ -35,8 +35,10 @@ public class Barraca implements Classificavel {
 
     public boolean adicionarVoluntario(Voluntario voluntario) {
         if (voluntario.getInstituicao().equals(instituicao)) {
-            return voluntarios.add(voluntario);
+            voluntarios.add(voluntario);
+            return true;
         }
+        System.out.println("Erro: Instituição do voluntário (" + voluntario.getInstituicao() + ") não corresponde à da barraca (" + instituicao + ")");
         return false;
     }
 
@@ -57,13 +59,15 @@ public class Barraca implements Classificavel {
 
     public void registrarVenda(double valor, Voluntario voluntario) {
         this.vendasTotais += valor;
-        if (voluntario.getTipo().equals("VENDAS")) {
+        if (voluntario != null && voluntario.getTipo().equals("VENDAS")) {
             voluntario.setVendasDiarias(voluntario.getVendasDiarias() + valor);
+            System.out.println("Venda de €" + valor + " registrada para voluntário " + voluntario.getNome() + ". Vendas diárias: €" + voluntario.getVendasDiarias());
         }
     }
 
     public void atualizarStockFinalDiario() {
         this.stockFinalDiario = produtos.stream().mapToInt(Produto::getStock).sum();
+        System.out.println("Stock final diário atualizado para barraca " + nome + ": " + stockFinalDiario);
     }
 
     public int getStockFinalDiario() { return stockFinalDiario; }
@@ -71,18 +75,13 @@ public class Barraca implements Classificavel {
     @Override
     public String calcularClassificacao() {
         atualizarStockFinalDiario();
-        if (stockFinalDiario > 100) {
-            return "Bronze";
-        } else if (stockFinalDiario >= 50) {
-            return "Prata";
-        } else {
-            return "Ouro";
-        }
+        if (stockFinalDiario > 100) return "Bronze";
+        else if (stockFinalDiario >= 50) return "Prata";
+        else return "Ouro";
     }
 
     @Override
     public String toString() {
-        return "Barraca: " + nome + " (" + instituicao + ", Classificação: " + calcularClassificacao()+")";
-
+        return "Barraca: " + nome + " (" + instituicao + ", Stock: " + stockFinalDiario + ", Classificação: " + calcularClassificacao() + ")";
     }
 }

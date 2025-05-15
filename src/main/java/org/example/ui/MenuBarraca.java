@@ -3,6 +3,8 @@ package org.example.ui;
 import org.example.model.Barraca;
 import org.example.model.Federacao;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class MenuBarraca {
@@ -19,8 +21,15 @@ class MenuBarraca {
             System.out.println("2. Listar Barracas");
             System.out.println("3. Voltar");
             System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -34,7 +43,12 @@ class MenuBarraca {
                     break;
                 case 2:
                     System.out.println("\n=== Lista de Barracas ===");
-                    Federacao.getInstance().getBarracas().forEach(b -> System.out.println(b.toString()));
+                    List<Barraca> barracas = Federacao.getInstance().getBarracas();
+                    if (barracas.isEmpty()) {
+                        System.out.println("Nenhuma barraca registrada.");
+                    } else {
+                        barracas.forEach(b -> System.out.println("Barraca: " + b.getNome() + " (" + b.getInstituicao() + ")"));
+                    }
                     break;
                 case 3:
                     return;

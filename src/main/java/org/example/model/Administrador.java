@@ -7,6 +7,6 @@ public class Administrador extends Pessoa {
 
     @Override
     public String toString() {
-        return "Administrador: " + nome + " (" + numeroAluno + ", " + curso + ", " + instituicao+ ", " + password+")";
+        return "Administrador: " + nome + " (" + numeroAluno + ", " + curso + ", " + instituicao+ ", " + password+ ")";
 }
 }

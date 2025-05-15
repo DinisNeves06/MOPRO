@@ -1,5 +1,6 @@
 package org.example.ui;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class MenuAdministrador {
@@ -21,8 +22,15 @@ class MenuAdministrador {
             System.out.println("7. Voltar");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -48,7 +56,6 @@ class MenuAdministrador {
                 default:
                     System.out.println("Opção inválida!");
             }
-
         }
     }
 }

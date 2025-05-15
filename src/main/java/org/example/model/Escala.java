@@ -30,6 +30,5 @@ public class Escala {
         sb.append("Escala: ").append(dia).append("\nVoluntários:\n");
         voluntarios.forEach(v -> sb.append("- ").append(v.getNome()).append(" (").append(v.getTipo()).append(")\n"));
         return sb.toString();
-
     }
 }
