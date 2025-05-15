@@ -1,64 +1,27 @@
 package org.example.model;
 
-import java.util.Objects;
-
 public class Produto {
     private String nome;
     private double preco;
+    private int stock;
 
-    private static final String NOME_POR_OMISSAO = "por definir";
-    private static final double PRECO_POR_OMISSAO = 0.0;
-
-    public Produto(String nome, double preco) {
+    public Produto(String nome, double preco, int stock) {
         this.nome = nome;
         this.preco = preco;
+        this.stock = stock;
     }
 
-    public Produto() {
-        this.nome = NOME_POR_OMISSAO;
-        this.preco = PRECO_POR_OMISSAO;
-    }
+    public String getNome() { return nome; }
+    public double getPreco() { return preco; }
+    public int getStock() { return stock; }
+    public void setStock(int stock) { this.stock = stock; }
 
-    public Produto(Produto produto) {
-        this.nome = produto.nome;
-        this.preco = produto.preco;
-    }
-
-    public String getNome() {
-
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
-        return Double.compare(preco, produto.preco) == 0 && Objects.equals(nome, produto.nome);
+    public void reporStock(int quantidade) {
+        this.stock += quantidade;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("");
-        sb.append("\nNome: ").append(nome);
-        sb.append("\nPreco: ").append(preco).append("€");
-        sb.append("");
-        return sb.toString();
+        return "Produto: " + nome + " (Preço: €" + preco + ", Stock: " + stock+")";
     }
-
 }

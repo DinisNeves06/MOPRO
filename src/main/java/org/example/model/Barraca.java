@@ -3,114 +3,86 @@ package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Barraca {
-
+public class Barraca implements Classificavel {
     private String nome;
-    private final List<Voluntario> voluntarios;
-    private Instituição instituição;
-    private final List<StockProdutos> stock;
+    private String instituicao;
+    private List<Produto> produtos;
+    private List<Voluntario> voluntarios;
+    private List<Escala> escalas;
+    private int stockFinalDiario;
+    private double vendasTotais;
 
-    public Barraca (String nome, Instituição instituição){
-
+    public Barraca(String nome, String instituicao) {
         this.nome = nome;
-        this.instituição = instituição;
+        this.instituicao = instituicao;
+        this.produtos = new ArrayList<>();
         this.voluntarios = new ArrayList<>();
-        this.stock = new ArrayList<>();
-
+        this.escalas = new ArrayList<>();
+        this.stockFinalDiario = 0;
+        this.vendasTotais = 0.0;
     }
 
+    public String getNome() { return nome; }
+    public String getInstituicao() { return instituicao; }
+    public List<Produto> getProdutos() { return produtos; }
+    public List<Voluntario> getVoluntarios() { return voluntarios; }
+    public List<Escala> getEscalas() { return escalas; }
+    public double getVendasTotais() { return vendasTotais; }
 
-    public String getNome() {
-        return nome;
+    public boolean adicionarProduto(Produto produto) {
+        return produtos.add(produto);
     }
 
-    public Instituição getInstituição() {
-        return instituição;
-    }
-
-    public List<Voluntario> getVoluntarios() {
-        return voluntarios;
-    }
-
-    public List<StockProdutos> getStock() {
-        return stock;
-    }
-
-    public void setStock(List<StockProdutos> stock){
-        this.stock = stock;
-    }
-
-    public boolean adicionarVoluntario(Voluntario voluntario){
-        if (!this.instituição.equals(voluntario.getInstituicao())){
-            System.out.println("O voluntário não pertence à instituição da barraca.");
-            return false;
+    public boolean adicionarVoluntario(Voluntario voluntario) {
+        if (voluntario.getInstituicao().equals(instituicao)) {
+            return voluntarios.add(voluntario);
         }
-        if (voluntario.getBarracaAssociada() != null){
-            System.out.println("O voluntário já pertence a outra barraca.");
-            return false;
-        }
-
-        voluntarios.add(voluntario);
-        voluntario.setBarracaAssociada(this);
-        return true;
+        return false;
     }
 
-    public void adicionarStock (String nomeProduto, int quantidade){
-        for (StockProdutos sp : stock){
-            if (sp.getNome().equals(nomeProduto)){
-                sp.setQuantidade(sp.getQuantidade() + quantidade);
-                System.out.println("Produto " + nomeProduto + "está atualizado no stock");
-                return;
-            }
-        }
-
-        StockProdutos novoProduto = new StockProdutos(nomeProduto, 0, quantidade);
-        stock.add(novoProduto);
-        System.out.println("Produto " + nomeProduto + "adicionado ao stock");
-    }
-
-    public double exportarVendas(){
-        double totalVendas = 0.0;
-
-        for (Voluntario v : voluntarios){
-            if (v instanceof VoluntarioVendas){
-                VoluntarioVendas vv = (VoluntarioVendas) v;
-                for (VendaProdutos venda : vv.getTodasVendas()){
-                    totalVendas += venda.getValorTotal();
-
+    public boolean adicionarEscala(Escala escala) {
+        for (Voluntario v : escala.getVoluntarios()) {
+            for (Barraca b : Federacao.getInstance().getBarracas()) {
+                if (!b.equals(this)) {
+                    for (Escala e : b.getEscalas()) {
+                        if (e.getDia().equals(escala.getDia()) && e.getVoluntarios().contains(v)) {
+                            return false;
+                        }
+                    }
                 }
             }
         }
-
-        return totalVendas;
+        return escalas.add(escala);
     }
 
-    private int exportarStockTotal(){
-        int totalStock = 0;
-
-        for (StockProdutos sp : stock){
-            totalStock += sp.getQuantidade();
+    public void registrarVenda(double valor, Voluntario voluntario) {
+        this.vendasTotais += valor;
+        if (voluntario.getTipo().equals("VENDAS")) {
+            voluntario.setVendasDiarias(voluntario.getVendasDiarias() + valor);
         }
-        return totalStock;
     }
 
-    private int calcularTotalProdutos(){
-        int total = 0;
-        for (StockProdutos sp : stock){
-            total += sp.getQuantidade();
-        }
-        return total;
+    public void atualizarStockFinalDiario() {
+        this.stockFinalDiario = produtos.stream().mapToInt(Produto::getStock).sum();
     }
 
-    public String classificar(){
-        int stockFinal = exportarStockTotal();
-        if (stockFinal > 100){
+    public int getStockFinalDiario() { return stockFinalDiario; }
+
+    @Override
+    public String calcularClassificacao() {
+        atualizarStockFinalDiario();
+        if (stockFinalDiario > 100) {
             return "Bronze";
-        } else if (stockFinal >= 50 && stockFinal <= 100) {
+        } else if (stockFinalDiario >= 50) {
             return "Prata";
-
-        }else {
+        } else {
             return "Ouro";
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Barraca: " + nome + " (" + instituicao + ", Classificação: " + calcularClassificacao()+")";
+
     }
 }

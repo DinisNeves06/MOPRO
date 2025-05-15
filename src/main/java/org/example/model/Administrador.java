@@ -1,9 +1,12 @@
 package org.example.model;
 
-public class Administrador extends Utilizador {
+public class Administrador extends Pessoa {
+    public Administrador(String nome, String numeroAluno, String curso, String instituicao, String password) {
+        super(nome, numeroAluno, curso, instituicao, password);
+    }
 
-    public Administrador(String nome, int numeroAluno, String curso, String password) {
-            super(nome, numeroAluno, curso, password);
-        }
+    @Override
+    public String toString() {
+        return "Administrador: " + nome + " (" + numeroAluno + ", " + curso + ", " + instituicao+ ", " + password+")";
 }
-
+}
