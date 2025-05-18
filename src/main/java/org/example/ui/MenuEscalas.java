@@ -48,12 +48,12 @@ class MenuEscalas {
                         break;
                     }
 
-                    System.out.print("Dia (YYYY-MM-DD): ");
+                    System.out.print("Dia (ANO-MES-DIA): ");
                     LocalDate dia;
                     try {
                         dia = LocalDate.parse(scanner.nextLine());
                     } catch (Exception e) {
-                        System.out.println("Formato de data inválido! Use YYYY-MM-DD.");
+                        System.out.println("Formato de data inválido! Use ANO-MES-DIA.");
                         break;
                     }
                     Escala escala = new Escala(dia);
