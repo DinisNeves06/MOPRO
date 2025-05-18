@@ -1,10 +1,11 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Escala {
+public class Escala implements Serializable {
     private LocalDate dia;
     private List<Voluntario> voluntarios;
 

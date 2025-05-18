@@ -1,6 +1,8 @@
 package org.example.model;
 
-public class Administrador extends Pessoa {
+import java.io.Serializable;
+
+public class Administrador extends Pessoa implements Serializable {
     public Administrador(String nome, String numeroAluno, String curso, String instituicao, String password) {
         super(nome, numeroAluno, curso, instituicao, password);
     }

@@ -1,9 +1,10 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Barraca implements Classificavel {
+public class Barraca implements Classificavel, Serializable {
     private String nome;
     private String instituicao;
     private List<Produto> produtos;
@@ -66,10 +67,13 @@ public class Barraca implements Classificavel {
     }
 
     public void atualizarStockFinalDiario() {
-        this.stockFinalDiario = produtos.stream().mapToInt(Produto::getStock).sum();
+        int somaStock = 0;
+        for (Produto p : produtos) {
+            somaStock += p.getStock();
+        }
+        this.stockFinalDiario = somaStock;
         System.out.println("Stock final diário atualizado para barraca " + nome + ": " + stockFinalDiario);
     }
-
     public int getStockFinalDiario() { return stockFinalDiario; }
 
     @Override

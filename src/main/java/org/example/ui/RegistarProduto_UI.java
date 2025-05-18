@@ -6,6 +6,7 @@ import org.example.model.Produto;
 import org.example.utils.Utils;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class RegistarProduto_UI {
@@ -17,19 +18,45 @@ class RegistarProduto_UI {
 
     public void mostrar() {
         System.out.print("Nome da barraca: ");
-        String nomeBarraca = scanner.nextLine();
-        Barraca barraca = Federacao.getInstance().getBarracas().stream()
-                .filter(b -> b.getNome().equals(nomeBarraca))
-                .findFirst()
-                .orElse(null);
+        String nomeBarraca = scanner.nextLine().trim();
+        Barraca barraca = null;
+        for (Barraca b : Federacao.getInstance().getBarracas()) {
+            if (b.getNome().equals(nomeBarraca)) {
+                barraca = b;
+                break;
+            }
+        }
 
         if (barraca == null) {
-            System.out.println("Barraca não encontrada!");
+            System.out.println("Erro: O sistema não conseguiu localizar a barraca '" + nomeBarraca + "'!");
+            System.out.println("Barracas disponíveis:");
+            for (Barraca b : Federacao.getInstance().getBarracas()) {
+                System.out.println("- " + b.getNome() + " (Instituição: " + b.getInstituicao() + ")");
+            }
+            return;
+        }
+
+        // Listar produtos existentes da barraca
+        System.out.println("=== Produtos da barraca '" + nomeBarraca + "' ===");
+        List<Produto> produtos = barraca.getProdutos();
+        if (produtos.isEmpty()) {
+            System.out.println("Nenhum produto registrado nesta barraca.");
+        } else {
+            for (Produto p : produtos) {
+                System.out.println("- " + p.getNome() + " (Preço: €" + p.getPreco() + ", Stock: " + p.getStock() + ")");
+            }
+        }
+
+        // Adicionar novo produto
+        System.out.print("Deseja adicionar um novo produto? (Sim/Não): ");
+        String resposta = scanner.nextLine();
+        if (!resposta.equals("Sim")) {
+            System.out.println("Operação cancelada.");
             return;
         }
 
         System.out.print("Nome do produto: ");
-        String nome = scanner.nextLine();
+        String nome = scanner.nextLine().trim();
         System.out.print("Preço: ");
         double preco;
         try {

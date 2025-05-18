@@ -1,6 +1,8 @@
 package org.example.model;
 
-public class Voluntario extends Pessoa implements Classificavel {
+import java.io.Serializable;
+
+public class Voluntario extends Pessoa implements Classificavel, Serializable {
     private String tipo; // "VENDAS" ou "STOCK"
     private double vendasDiarias;
 

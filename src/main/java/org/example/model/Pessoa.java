@@ -1,6 +1,8 @@
 package org.example.model;
 
-public abstract class Pessoa {
+import java.io.Serializable;
+
+public abstract class Pessoa implements Serializable {
     protected String nome;
     protected String numeroAluno;
     protected String curso;
