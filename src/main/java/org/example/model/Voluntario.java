@@ -1,7 +1,7 @@
 package org.example.model;
 
 public class Voluntario extends Pessoa implements Classificavel {
-    private String tipo; // "VENDAS" ou "STOCK"
+    private final String tipo;
     private double vendasDiarias;
 
     public Voluntario(String nome, String numeroAluno, String curso, String instituicao, String password, String tipo) {
@@ -28,7 +28,7 @@ public class Voluntario extends Pessoa implements Classificavel {
                 return "Bronze";
             }
         }
-        return "N/A"; // Voluntários de stock não têm classificação de vendas
+        return "N/A";
     }
 
     @Override

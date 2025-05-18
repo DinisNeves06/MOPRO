@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Barraca implements Classificavel {
-    private String nome;
-    private String instituicao;
-    private List<Produto> produtos;
-    private List<Voluntario> voluntarios;
-    private List<Escala> escalas;
+    private final String nome;
+    private final String instituicao;
+    private final List<Produto> produtos;
+    private final List<Voluntario> voluntarios;
+    private final List<Escala> escalas;
     private int stockFinalDiario;
     private double vendasTotais;
 

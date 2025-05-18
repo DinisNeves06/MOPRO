@@ -1,8 +1,8 @@
 package org.example.model;
 
 public class Produto {
-    private String nome;
-    private double preco;
+    private final String nome;
+    private final double preco;
     private int stock;
 
     public Produto(String nome, double preco, int stock) {

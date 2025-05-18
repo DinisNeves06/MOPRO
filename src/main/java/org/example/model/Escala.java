@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Escala {
-    private LocalDate dia;
-    private List<Voluntario> voluntarios;
+    private final LocalDate dia;
+    private final List<Voluntario> voluntarios;
 
     public Escala(LocalDate dia) {
         this.dia = dia;

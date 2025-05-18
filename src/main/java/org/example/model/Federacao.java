@@ -5,13 +5,12 @@ import java.util.List;
 
 public class Federacao {
     private static Federacao instance;
-    private List<Barraca> barracas;
+    private final List<Barraca> barracas;
     private Administrador administrador;
     private Voluntario voluntario;
 
     private Federacao() {
         this.barracas = new ArrayList<>();
-        // Administrador será definido na main
         this.administrador = null;
         this.voluntario = null;
     }
