@@ -22,7 +22,6 @@ public class Federacao {
     public Administrador getAdministrador() { return administrador; }
     public void setAdministrador(Administrador administrador) {
         this.administrador = administrador;
-        System.out.println("Administrador configurado: " + administrador.getNome());
     }
 
     public void adicionarBarraca(Barraca barraca) {
